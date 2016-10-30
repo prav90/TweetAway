@@ -13,12 +13,13 @@
         android:padding="4dp"
         />
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvProfileShortName"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/ivProfileImage"
         android:hint="profile short name"
+        android:maxLength="15"
         />
     <TextView
         android:layout_width="match_parent"
@@ -28,4 +29,12 @@
         android:layout_below="@+id/tvProfileShortName"
         android:layout_toRightOf="@+id/ivProfileImage"
         android:layout_toEndOf="@+id/ivProfileImage"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTimeSinceTweet"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:hint="3s"
+        />
 </RelativeLayout>

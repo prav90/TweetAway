@@ -2,6 +2,7 @@ package com.codepath.apps.tweetaway.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 /**
  * Created by rpraveen on 10/27/16.
@@ -64,6 +65,7 @@ import org.json.JSONObject;
  "screen_name": "oauth_dancer"
  },
  */
+@Parcel
 public class User {
   private String name;
 
@@ -83,15 +85,18 @@ public class User {
     return profileImageURL;
   }
 
-  private long uid;
-  private String screenName;
-  private String profileImageURL;
+  long uid;
+  String screenName;
+  String profileImageURL;
 
   public static User fromJSON(JSONObject jsonObject) throws JSONException {
     User user = new User();
     user.name = jsonObject.getString("name");
     user.uid = jsonObject.getLong("id");
     user.screenName = jsonObject.getString("screen_name");
+    if (user.screenName != null) {
+      user.screenName = "@" + user.getScreenName().trim();
+    }
     user.profileImageURL = jsonObject.getString("profile_image_url_https");
     return user;
   }

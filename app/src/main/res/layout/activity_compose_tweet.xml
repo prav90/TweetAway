@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:baselineAligned="false"
+              android:orientation="vertical"
+              android:weightSum="1">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ivCancelCompose"
+        android:src="@android:drawable/ic_delete"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:padding="4dp"
+        />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/profileHolder"
+        android:layout_toRightOf="@+id/ivCancelCompose"
+        android:layout_alignParentRight="true">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_launcher"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:padding="4dp"
+            android:id="@+id/ivProfileImage"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/ivProfileImage"
+            android:layout_alignParentTop="true"
+            android:hint="full name"
+            android:id="@+id/tvFullName"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/tvFullName"
+            android:layout_below="@+id/tvFullName"
+            android:hint="pName"
+            android:id="@+id/tvProfileShortName"
+            />
+
+    </RelativeLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/etNewStatus"
+        android:hint="What's happening?"
+        android:maxLength="140"
+        android:padding="4dp"
+        android:layout_below="@+id/profileHolder"
+        android:layout_above="@+id/divider"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/divider"
+        android:background="@android:color/background_dark"
+        android:layout_above="@+id/tweetComposeFooter"
+        android:padding="4dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tweetComposeFooter"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tweet"
+            android:id="@+id/btNewTweet"
+            android:padding="4dp"
+            android:layout_alignParentRight="true"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="140"
+            android:paddingRight="20dp"
+            android:id="@+id/tvTweetCharsLeft"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/btNewTweet"/>
+    </RelativeLayout>
+
+</RelativeLayout>

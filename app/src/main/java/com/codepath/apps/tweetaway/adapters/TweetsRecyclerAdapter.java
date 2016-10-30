@@ -10,9 +10,13 @@ import android.widget.TextView;
 
 import com.codepath.apps.tweetaway.R;
 import com.codepath.apps.tweetaway.models.Tweet;
+import com.codepath.apps.tweetaway.utils.DateUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by rpraveen on 10/28/16.
@@ -40,6 +44,9 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<TweetsRecyclerAd
     holder.tvProfileName.setText(currentTweet.getUser().getName());
     holder.tvTweetBody.setText(currentTweet.getBody());
     holder.ivProfileImage.setImageResource(android.R.color.transparent);
+    holder.tvTimeSinceTweet.setText(
+    DateUtil.getRelativeTimeForTweet(currentTweet.getCreatedAt())
+    );
     Picasso
       .with(mContext)
       .load(currentTweet.getUser().getProfileImageURL())
@@ -53,15 +60,14 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<TweetsRecyclerAd
 
   public static class TweetHolder extends RecyclerView.ViewHolder {
 
-    TextView tvProfileName;
-    TextView tvTweetBody;
-    ImageView ivProfileImage;
+    @BindView(R.id.tvProfileShortName) TextView tvProfileName;
+    @BindView(R.id.tvTweetBody) TextView tvTweetBody;
+    @BindView(R.id.ivProfileImage) ImageView ivProfileImage;
+    @BindView(R.id.tvTimeSinceTweet) TextView tvTimeSinceTweet;
 
     public TweetHolder(View view) {
       super(view);
-      tvProfileName = (TextView) view.findViewById(R.id.tvProfileShortName);
-      tvTweetBody = (TextView) view.findViewById(R.id.tvTweetBody);
-      ivProfileImage = (ImageView) view.findViewById(R.id.ivProfileImage);
+      ButterKnife.bind(this, view);
     }
   }
 }
