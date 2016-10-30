@@ -44,6 +44,9 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<TweetsRecyclerAd
     holder.tvProfileName.setText(currentTweet.getUser().getName());
     holder.tvTweetBody.setText(currentTweet.getBody());
     holder.ivProfileImage.setImageResource(android.R.color.transparent);
+    holder.ivTweetImage.setImageResource(android.R.color.transparent);
+    holder.ivTweetImage.setVisibility(View.GONE);
+    
     holder.tvTimeSinceTweet.setText(
     DateUtil.getRelativeTimeForTweet(currentTweet.getCreatedAt())
     );
@@ -51,6 +54,13 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<TweetsRecyclerAd
       .with(mContext)
       .load(currentTweet.getUser().getProfileImageURL())
       .into(holder.ivProfileImage);
+    if (currentTweet.getMedia().isImage()) {
+      holder.ivTweetImage.setVisibility(View.VISIBLE);
+      Picasso
+      .with(mContext)
+      .load(currentTweet.getMedia().getImage("small"))
+      .into(holder.ivTweetImage);
+    }
   }
 
   @Override
@@ -64,6 +74,7 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<TweetsRecyclerAd
     @BindView(R.id.tvTweetBody) TextView tvTweetBody;
     @BindView(R.id.ivProfileImage) ImageView ivProfileImage;
     @BindView(R.id.tvTimeSinceTweet) TextView tvTimeSinceTweet;
+    @BindView(R.id.ivTweetImage) ImageView ivTweetImage;
 
     public TweetHolder(View view) {
       super(view);

@@ -39,11 +39,25 @@
         android:layout_alignParentRight="true"
         android:hint="3s"
         />
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/ivTweetImage"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="fitXY"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_below="@+id/tvTweetBody"
+        />
+
     <include
         android:id="@+id/tweetFooter"
         layout="@layout/tweet_footer_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTweetBody"
+        android:layout_below="@+id/ivTweetImage"
         android:layout_toRightOf="@+id/ivProfileImage"/>
 </RelativeLayout>

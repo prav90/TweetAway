@@ -69,6 +69,10 @@ public class Tweet {
     return user;
   }
 
+  public Media getMedia() {
+    return media;
+  }
+
   public static Tweet fromJSON(JSONObject jsonObject) throws JSONException {
     Tweet tweet = new Tweet();
     tweet.body = jsonObject.getString("text");
