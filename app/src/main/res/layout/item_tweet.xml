@@ -26,6 +26,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvTweetBody"
         android:hint="Tweet body"
+        android:autoLink="all"
+        android:linksClickable="true"
         android:layout_below="@+id/tvProfileShortName"
         android:layout_toRightOf="@+id/ivProfileImage"
         android:layout_toEndOf="@+id/ivProfileImage"/>

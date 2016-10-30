@@ -48,8 +48,10 @@ import java.util.ArrayList;
 public class Tweet {
   private String body;
   private long uid;
-  private User user;
   private String createdAt;
+
+  private User user;
+  private Media media;
 
   public String getBody() {
     return body;
@@ -73,6 +75,22 @@ public class Tweet {
     tweet.uid = jsonObject.getLong("id");
     tweet.createdAt = jsonObject.getString("created_at");
     tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
+
+    JSONObject entities = jsonObject.getJSONObject("entities");
+    if (!entities.has("media")) {
+      tweet.media = new Media();
+    } else { // has photo, gif or video
+      // load the media array from tweet object
+      JSONArray media = entities.getJSONArray("media");
+      // if extended entities is present override the media
+      if (jsonObject.has("extended_entities")) {
+        JSONObject extendedEntities = jsonObject.getJSONObject("extended_entities");
+        if (extendedEntities.has("media")) {
+          media = extendedEntities.getJSONArray("media");
+        }
+      }
+      tweet.media = Media.fromJSONArray(media);
+    }
     return tweet;
   }
 
