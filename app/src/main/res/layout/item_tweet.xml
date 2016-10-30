@@ -39,4 +39,11 @@
         android:layout_alignParentRight="true"
         android:hint="3s"
         />
+    <include
+        android:id="@+id/tweetFooter"
+        layout="@layout/tweet_footer_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTweetBody"
+        android:layout_toRightOf="@+id/ivProfileImage"/>
 </RelativeLayout>

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -22,6 +23,7 @@
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeContainer"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -29,15 +31,13 @@
             android:id="@+id/rvTweets"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             />
-
-        <!--
-            To add a behavior use
-            app:layout_behavior="com.codepath.apps.tweetaway.behaviors.NewTweetFabBehavior"
-        -->
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <!--
+        To add a behavior use
+    app:layout_behavior="com.codepath.apps.tweetaway.behaviors.NewTweetFabBehavior"
+    -->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabNewTweet"
         android:layout_height="wrap_content"

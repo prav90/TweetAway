@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="tweet_icon_color">#aab8c2</string>
 </resources>
