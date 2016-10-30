@@ -3,9 +3,11 @@ package com.codepath.apps.tweetaway.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -41,6 +43,8 @@ public class TimelineActivity extends AppCompatActivity {
 
   @BindView(R.id.rvTweets) RecyclerView mRvTweets;
   @BindView(R.id.fabNewTweet) FloatingActionButton mFabNewTweet;
+  @BindView(R.id.swipeContainer) SwipeRefreshLayout mSwipeRefreshLayout;
+  @BindView(R.id.toolBar) Toolbar mToolBar;
 
   private EndlessRecyclerViewScrollListener mRvScrollListener;
 
@@ -53,6 +57,8 @@ public class TimelineActivity extends AppCompatActivity {
 
     // Bind Views
     ButterKnife.bind(this);
+
+    setSupportActionBar(mToolBar);
 
     // initialize list and adapters
     mTweets = new ArrayList<>();
@@ -82,6 +88,13 @@ public class TimelineActivity extends AppCompatActivity {
       }
     });
 
+    mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+      @Override
+      public void onRefresh() {
+        resetTimeLine();
+      }
+    });
+
     // populate the timeline
     mClient = TwitterApplication.getRestClient();
     getCurrentUser();
@@ -100,10 +113,7 @@ public class TimelineActivity extends AppCompatActivity {
       mClient.postStatusUpdate(statusUpdate, new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-          mTweetMaxID = -1;
-          mTweets.clear();
-          mAdapter.notifyDataSetChanged();
-          populateTimeline();
+          resetTimeLine();
           Toast.makeText(TimelineActivity.this, "Status update suscess", Toast.LENGTH_SHORT).show();
         }
 
@@ -113,6 +123,13 @@ public class TimelineActivity extends AppCompatActivity {
         }
       });
     }
+  }
+
+  private void resetTimeLine() {
+    mTweetMaxID = -1;
+    mTweets.clear();
+    mAdapter.notifyDataSetChanged();
+    populateTimeline();
   }
 
   private void getCurrentUser() {
@@ -151,6 +168,7 @@ public class TimelineActivity extends AppCompatActivity {
         mTweetMaxID--;
         mTweets.addAll(recentTweets);
         mAdapter.notifyDataSetChanged();
+        mSwipeRefreshLayout.setRefreshing(false);
       }
 
       @Override

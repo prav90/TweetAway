@@ -7,15 +7,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.codepath.apps.tweetaway.activities.TimelineActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvTweets"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"/>
+    </android.support.design.widget.AppBarLayout>
 
-    <!--
-        To add a behavior use
-        app:layout_behavior="com.codepath.apps.tweetaway.behaviors.NewTweetFabBehavior"
-    -->
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvTweets"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
+
+        <!--
+            To add a behavior use
+            app:layout_behavior="com.codepath.apps.tweetaway.behaviors.NewTweetFabBehavior"
+        -->
+    </android.support.v4.widget.SwipeRefreshLayout>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabNewTweet"
         android:layout_height="wrap_content"
