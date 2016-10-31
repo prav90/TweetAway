@@ -117,8 +117,15 @@ public class TimelineActivity extends AppCompatActivity {
       mClient.postStatusUpdate(statusUpdate, new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-          resetTimeLine();
           Toast.makeText(TimelineActivity.this, "Status update success", Toast.LENGTH_SHORT).show();
+          try {
+            Tweet recentComposeTweet = Tweet.fromJSON(response);
+            mTweets.add(0, recentComposeTweet);
+            mAdapter.notifyDataSetChanged();
+            mRvTweets.getLayoutManager().scrollToPosition(0);
+          } catch (Exception e) {
+            Log.d("compose failure", e.toString());
+          }
         }
 
         @Override
