@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:padding="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -11,53 +12,84 @@
         android:layout_alignParentTop="true"
         android:src="@android:mipmap/sym_def_app_icon"
         android:padding="4dp"
+        android:scaleType="fitXY"
         />
+
     <TextView
+        android:textStyle="bold"
+        android:textColor="#000000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvProfileShortName"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/ivProfileImage"
-        android:hint="profile short name"
-        android:maxLength="15"
+        android:paddingLeft="8dp"
+        tools:text="profile short n"
+        android:textSize="16sp"
         />
     <TextView
+        android:id="@+id/tvTwitterName"
+        android:textColor="#898989"
+        android:paddingLeft="8dp"
+        android:layout_toRightOf="@+id/tvProfileShortName"
+        tools:text="twitter name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#898989"
+        android:id="@+id/tvTimeSinceTweet"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:paddingRight="4dp"
+        android:hint="3s"
+        android:textSize="16sp"
+        />
+
+    <TextView
+        android:textColor="#000000"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tvTweetBody"
         android:hint="Tweet body"
         android:autoLink="all"
         android:linksClickable="true"
+        android:paddingTop="4dp"
+        android:paddingRight="4dp"
+        android:paddingLeft="8dp"
+        android:layout_alignLeft="@+id/tvProfileShortName"
         android:layout_below="@+id/tvProfileShortName"
         android:layout_toRightOf="@+id/ivProfileImage"
-        android:layout_toEndOf="@+id/ivProfileImage"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvTimeSinceTweet"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:hint="3s"
-        />
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:textSize="16sp"/>
 
-    <ImageView
-        android:visibility="gone"
-        android:id="@+id/ivTweetImage"
-        android:paddingRight="8dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
+    <LinearLayout
+        android:id="@+id/imageVideoHolder"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="fitXY"
+        android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/ivProfileImage"
-        android:layout_below="@+id/tvTweetBody"
-        />
+        android:layout_below="@+id/tvTweetBody">
+        <ImageView
+            android:id="@+id/ivTweetImage"
+            android:visibility="gone"
+            android:paddingRight="4dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:paddingLeft="8dp"
+            android:scaleType="fitXY"
+            />
+    </LinearLayout>
 
     <include
         android:id="@+id/tweetFooter"
         layout="@layout/tweet_footer_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ivTweetImage"
+        android:layout_below="@+id/imageVideoHolder"
         android:layout_toRightOf="@+id/ivProfileImage"/>
 </RelativeLayout>

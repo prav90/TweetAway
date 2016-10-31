@@ -8,15 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.apps.tweetaway.R;
 import com.codepath.apps.tweetaway.models.Tweet;
 import com.codepath.apps.tweetaway.utils.DateUtil;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
  * Created by rpraveen on 10/28/16.
@@ -42,24 +43,29 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<TweetsRecyclerAd
   public void onBindViewHolder(TweetHolder holder, int position) {
     Tweet currentTweet = mTweets.get(position);
     holder.tvProfileName.setText(currentTweet.getUser().getName());
+    holder.tvTwitterName.setText(currentTweet.getUser().getScreenName());
     holder.tvTweetBody.setText(currentTweet.getBody());
     holder.ivProfileImage.setImageResource(android.R.color.transparent);
     holder.ivTweetImage.setImageResource(android.R.color.transparent);
     holder.ivTweetImage.setVisibility(View.GONE);
-    
+
     holder.tvTimeSinceTweet.setText(
-    DateUtil.getRelativeTimeForTweet(currentTweet.getCreatedAt())
+      DateUtil.getRelativeTimeForTweet(currentTweet.getCreatedAt())
     );
-    Picasso
+    holder.tvRetweets.setText(currentTweet.getRetweetCount() + "");
+    holder.tvFavorites.setText(currentTweet.getFavoriteCount() + "");
+    Glide
       .with(mContext)
       .load(currentTweet.getUser().getProfileImageURL())
+      .bitmapTransform(new RoundedCornersTransformation(mContext, 1, 1))
       .into(holder.ivProfileImage);
     if (currentTweet.getMedia().isImage()) {
       holder.ivTweetImage.setVisibility(View.VISIBLE);
-      Picasso
-      .with(mContext)
-      .load(currentTweet.getMedia().getImage("small"))
-      .into(holder.ivTweetImage);
+      Glide
+        .with(mContext)
+        .load(currentTweet.getMedia().getImage("small"))
+        .bitmapTransform(new RoundedCornersTransformation(mContext, 10, 10))
+        .into(holder.ivTweetImage);
     }
   }
 
@@ -71,10 +77,15 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<TweetsRecyclerAd
   public static class TweetHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.tvProfileShortName) TextView tvProfileName;
+    @BindView(R.id.tvTwitterName) TextView tvTwitterName;
     @BindView(R.id.tvTweetBody) TextView tvTweetBody;
     @BindView(R.id.ivProfileImage) ImageView ivProfileImage;
     @BindView(R.id.tvTimeSinceTweet) TextView tvTimeSinceTweet;
     @BindView(R.id.ivTweetImage) ImageView ivTweetImage;
+
+    // footer
+    @BindView(R.id.tvRetweets) TextView tvRetweets;
+    @BindView(R.id.tvFavorites) TextView tvFavorites;
 
     public TweetHolder(View view) {
       super(view);

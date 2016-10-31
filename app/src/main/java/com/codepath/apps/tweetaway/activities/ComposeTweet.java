@@ -93,7 +93,7 @@ public class ComposeTweet extends AppCompatActivity {
 
   private void returnToTimelineActivity(String status) {
     Intent timeLineIntent = new Intent();
-    timeLineIntent.putExtra("statusUpdate", etNewStatus.getText().toString());
+    timeLineIntent.putExtra("statusUpdate", status);
     setResult(RESULT_OK, timeLineIntent);
     finish();
   }

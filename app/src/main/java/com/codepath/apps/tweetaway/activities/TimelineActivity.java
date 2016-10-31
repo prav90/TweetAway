@@ -16,6 +16,7 @@ import com.codepath.apps.tweetaway.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.tweetaway.R;
 import com.codepath.apps.tweetaway.TwitterApplication;
 import com.codepath.apps.tweetaway.TwitterClient;
+import com.codepath.apps.tweetaway.adapters.DividerItemDecoration;
 import com.codepath.apps.tweetaway.adapters.TweetsRecyclerAdapter;
 import com.codepath.apps.tweetaway.models.Tweet;
 import com.codepath.apps.tweetaway.models.User;
@@ -63,6 +64,9 @@ public class TimelineActivity extends AppCompatActivity {
     // initialize list and adapters
     mTweets = new ArrayList<>();
     mAdapter = new TweetsRecyclerAdapter(this, mTweets);
+    RecyclerView.ItemDecoration itemDecoration =
+      new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
+    mRvTweets.addItemDecoration(itemDecoration);
 
     // set recycler view adapter and layout
     mRvTweets.setAdapter(mAdapter);
@@ -81,7 +85,7 @@ public class TimelineActivity extends AppCompatActivity {
     mFabNewTweet.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Toast.makeText(TimelineActivity.this, "New tweet", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(TimelineActivity.this, "New tweet", Toast.LENGTH_SHORT).show();
         Intent showComposer = new Intent(TimelineActivity.this, ComposeTweet.class);
         showComposer.putExtra("current_user", Parcels.wrap(mCurrentUser));
         startActivityForResult(showComposer, COMPOSE_REQUEST_CODE);
@@ -108,13 +112,13 @@ public class TimelineActivity extends AppCompatActivity {
       if (statusUpdate == null || statusUpdate.length() == 0) {
         return;
       }
-      Toast.makeText(TimelineActivity.this, statusUpdate, Toast.LENGTH_LONG).show();
+      //Toast.makeText(TimelineActivity.this, statusUpdate, Toast.LENGTH_LONG).show();
       // call the api and refresh the timeline
       mClient.postStatusUpdate(statusUpdate, new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
           resetTimeLine();
-          Toast.makeText(TimelineActivity.this, "Status update suscess", Toast.LENGTH_SHORT).show();
+          Toast.makeText(TimelineActivity.this, "Status update success", Toast.LENGTH_SHORT).show();
         }
 
         @Override

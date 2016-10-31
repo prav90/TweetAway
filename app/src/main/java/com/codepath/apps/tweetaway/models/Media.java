@@ -15,8 +15,10 @@ public class Media {
   // by default everything is text only
   private boolean isTextOnly = true;
   private boolean isImage = false;
+  private boolean isVideo = false;
 
   private String imageURL = null;
+  private String videoURL = null;
 
   public static Media fromJSONArray(JSONArray mediaArray) {
     // there might be more than one of photos, multi_photos, video, animated_gif
@@ -31,6 +33,17 @@ public class Media {
             // there can be multiple images, we make it one for simplicity
             media.isImage = true;
             media.imageURL = mediaObject.getString("media_url_https");
+            break;
+          case "video":
+            JSONObject videoInfo = mediaObject.getJSONObject("video_info");
+            JSONArray videoVariants = videoInfo.getJSONArray("variants");
+            for (int j = 0; j < videoVariants.length(); j++) {
+              JSONObject videoDetails = videoVariants.getJSONObject(j);
+              if (videoDetails.getString("content_type").equalsIgnoreCase("video/mp4")) {
+                media.videoURL = videoDetails.getString("url");
+                media.isVideo = true;
+              }
+            }
             break;
           default:
             // default to text only for other types
@@ -55,11 +68,19 @@ public class Media {
     return imageURL;
   }
 
+  public String getVideoURL() {
+    return videoURL;
+  }
+
   public boolean isTextOnly() {
     return isTextOnly;
   }
 
   public boolean isImage() {
     return isImage;
+  }
+
+  public boolean isVideo() {
+    return isVideo;
   }
 }

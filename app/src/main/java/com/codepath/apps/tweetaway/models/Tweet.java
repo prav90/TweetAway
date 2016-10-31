@@ -49,6 +49,8 @@ public class Tweet {
   private String body;
   private long uid;
   private String createdAt;
+  private long retweetCount;
+  private long favoriteCount;
 
   private User user;
   private Media media;
@@ -69,6 +71,14 @@ public class Tweet {
     return user;
   }
 
+  public long getRetweetCount() {
+    return retweetCount;
+  }
+
+  public long getFavoriteCount() {
+    return favoriteCount;
+  }
+
   public Media getMedia() {
     return media;
   }
@@ -78,6 +88,9 @@ public class Tweet {
     tweet.body = jsonObject.getString("text");
     tweet.uid = jsonObject.getLong("id");
     tweet.createdAt = jsonObject.getString("created_at");
+    tweet.retweetCount = jsonObject.getLong("retweet_count");
+    tweet.favoriteCount = jsonObject.getLong("favorite_count");
+
     tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
 
     JSONObject entities = jsonObject.getJSONObject("entities");
