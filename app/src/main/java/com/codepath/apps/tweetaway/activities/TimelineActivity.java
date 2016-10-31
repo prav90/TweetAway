@@ -77,7 +77,7 @@ public class TimelineActivity extends AppCompatActivity {
     mRvScrollListener = new EndlessRecyclerViewScrollListener(rvLayoutManager) {
       @Override
       public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-        //populateTimeline();
+        populateTimeline();
       }
     };
     mRvTweets.addOnScrollListener(mRvScrollListener);
