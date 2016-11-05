@@ -36,6 +36,6 @@ captures/
 *.iml
 .idea/
 .idea/workspace.xml
-
+.travis.yml
 # Keystore files
 *.jks

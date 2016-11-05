@@ -3,53 +3,34 @@ package com.codepath.apps.tweetaway.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.codepath.apps.tweetaway.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.tweetaway.R;
 import com.codepath.apps.tweetaway.TwitterApplication;
-import com.codepath.apps.tweetaway.TwitterClient;
-import com.codepath.apps.tweetaway.adapters.DividerItemDecoration;
-import com.codepath.apps.tweetaway.adapters.TweetsRecyclerAdapter;
-import com.codepath.apps.tweetaway.models.Tweet;
+import com.codepath.apps.tweetaway.adapters.UserHomePagerAdapter;
 import com.codepath.apps.tweetaway.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class TimelineActivity extends AppCompatActivity {
 
   public static final int COMPOSE_REQUEST_CODE = 100;
 
-  private TwitterClient mClient;
-  private TweetsRecyclerAdapter mAdapter;
-  private ArrayList<Tweet> mTweets;
   private User mCurrentUser;
 
-  @BindView(R.id.rvTweets) RecyclerView mRvTweets;
-  @BindView(R.id.fabNewTweet) FloatingActionButton mFabNewTweet;
-  @BindView(R.id.swipeContainer) SwipeRefreshLayout mSwipeRefreshLayout;
-  @BindView(R.id.toolBar) Toolbar mToolBar;
-
-  private EndlessRecyclerViewScrollListener mRvScrollListener;
-
-  private long mTweetMaxID = -1;
+  FloatingActionButton mFabNewTweet;
+  Toolbar mToolBar;
+  ViewPager mPager;
+  TabLayout mTabLayout;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -57,30 +38,16 @@ public class TimelineActivity extends AppCompatActivity {
     setContentView(R.layout.activity_timeline);
 
     // Bind Views
-    ButterKnife.bind(this);
+    //ButterKnife.bind(this);
+    mToolBar = (Toolbar) findViewById(R.id.toolBar);
+    mFabNewTweet = (FloatingActionButton) findViewById(R.id.fabNewTweet);
+    mTabLayout = (TabLayout) findViewById(R.id.tabsUserHome);
+    mPager = (ViewPager) findViewById(R.id.pagerUserHome);
 
     setSupportActionBar(mToolBar);
 
-    // initialize list and adapters
-    mTweets = new ArrayList<>();
-    mAdapter = new TweetsRecyclerAdapter(this, mTweets);
-    RecyclerView.ItemDecoration itemDecoration =
-      new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
-    mRvTweets.addItemDecoration(itemDecoration);
-
-    // set recycler view adapter and layout
-    mRvTweets.setAdapter(mAdapter);
-    LinearLayoutManager rvLayoutManager = new LinearLayoutManager(this);
-    mRvTweets.setLayoutManager(rvLayoutManager);
-
-    // set up listeners
-    mRvScrollListener = new EndlessRecyclerViewScrollListener(rvLayoutManager) {
-      @Override
-      public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-        populateTimeline();
-      }
-    };
-    mRvTweets.addOnScrollListener(mRvScrollListener);
+    mPager.setAdapter(new UserHomePagerAdapter(getSupportFragmentManager(), this));
+    mTabLayout.setupWithViewPager(mPager);
 
     mFabNewTweet.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -92,17 +59,8 @@ public class TimelineActivity extends AppCompatActivity {
       }
     });
 
-    mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-      @Override
-      public void onRefresh() {
-        resetTimeLine();
-      }
-    });
-
     // populate the timeline
-    mClient = TwitterApplication.getRestClient();
     getCurrentUser();
-    populateTimeline();
   }
 
   @Override
@@ -114,37 +72,30 @@ public class TimelineActivity extends AppCompatActivity {
       }
       //Toast.makeText(TimelineActivity.this, statusUpdate, Toast.LENGTH_LONG).show();
       // call the api and refresh the timeline
-      mClient.postStatusUpdate(statusUpdate, new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-          try {
-            Tweet recentComposeTweet = Tweet.fromJSON(response);
-            mTweets.add(0, recentComposeTweet);
-            mAdapter.notifyDataSetChanged();
-            mRvTweets.getLayoutManager().scrollToPosition(0);
-            Toast.makeText(TimelineActivity.this, "Status update success", Toast.LENGTH_SHORT).show();
-          } catch (Exception e) {
-            Log.d("compose failure", e.toString());
-          }
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-          Toast.makeText(TimelineActivity.this, "Status update failed", Toast.LENGTH_SHORT).show();
-        }
-      });
+//      mClient.postStatusUpdate(statusUpdate, new JsonHttpResponseHandler() {
+//        @Override
+//        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//          try {
+//            Tweet recentComposeTweet = Tweet.fromJSON(response);
+//            mTweets.add(0, recentComposeTweet);
+//            mAdapter.notifyDataSetChanged();
+//            mRvTweets.getLayoutManager().scrollToPosition(0);
+//            Toast.makeText(TimelineActivity.this, "Status update success", Toast.LENGTH_SHORT).show();
+//          } catch (Exception e) {
+//            Log.d("compose failure", e.toString());
+//          }
+//        }
+//
+//        @Override
+//        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+//          Toast.makeText(TimelineActivity.this, "Status update failed", Toast.LENGTH_SHORT).show();
+//        }
+//      });
     }
   }
 
-  private void resetTimeLine() {
-    mTweetMaxID = -1;
-    mTweets.clear();
-    mAdapter.notifyDataSetChanged();
-    populateTimeline();
-  }
-
   private void getCurrentUser() {
-    mClient.getCurrentUserDetails(new JsonHttpResponseHandler(){
+    TwitterApplication.getRestClient().getCurrentUserDetails(new JsonHttpResponseHandler(){
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
         try {
@@ -152,34 +103,6 @@ public class TimelineActivity extends AppCompatActivity {
         } catch (Exception e) {
           Log.d("User fetch failed", e.toString());
         }
-      }
-
-      @Override
-      public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-        super.onFailure(statusCode, headers, throwable, errorResponse);
-      }
-    });
-  }
-
-  private void populateTimeline() {
-    mClient.getHomeTimeline(mTweetMaxID, new JsonHttpResponseHandler(){
-      @Override
-      public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-        List<Tweet> recentTweets = Tweet.fromJSONArray(response);
-        for (Tweet t : recentTweets) {
-          if (mTweetMaxID == -1) {
-            mTweetMaxID = t.getUid();
-          }
-          if (mTweetMaxID > t.getUid()) {
-            mTweetMaxID = t.getUid();
-          }
-        }
-        // max ID is inclusive - decrement to make sure the last story isn't fetched again
-        // stories less than or equal to this ID will be fetched in the next request
-        mTweetMaxID--;
-        mTweets.addAll(recentTweets);
-        mAdapter.notifyDataSetChanged();
-        mSwipeRefreshLayout.setRefreshing(false);
       }
 
       @Override
