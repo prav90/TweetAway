@@ -1,8 +1,9 @@
-package com.codepath.apps.tweetaway;
+package com.codepath.apps.tweetaway.application;
 
 import android.app.Application;
 import android.content.Context;
 
+import com.codepath.apps.tweetaway.network.TwitterClient;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowLog;
 import com.raizlabs.android.dbflow.config.FlowManager;

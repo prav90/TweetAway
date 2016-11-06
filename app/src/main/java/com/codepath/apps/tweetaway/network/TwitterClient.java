@@ -1,4 +1,4 @@
-package com.codepath.apps.tweetaway;
+package com.codepath.apps.tweetaway.network;
 
 import android.content.Context;
 
@@ -94,6 +94,12 @@ public class TwitterClient extends OAuthBaseClient {
     RequestParams params = new RequestParams();
     params.put("screen_name", screenName);
     params.put("cursor", cursor);
+    client.get(apiUrl, params, handler);
+  }
+
+  public void getDirectMessages(AsyncHttpResponseHandler handler) {
+    String apiUrl = getApiUrl("direct_messages.json");
+    RequestParams params = new RequestParams();
     client.get(apiUrl, params, handler);
   }
 

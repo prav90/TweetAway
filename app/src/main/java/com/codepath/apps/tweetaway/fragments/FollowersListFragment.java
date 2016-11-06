@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.codepath.apps.tweetaway.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.tweetaway.adapters.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.tweetaway.R;
 import com.codepath.apps.tweetaway.activities.UserProfileActivity;
 import com.codepath.apps.tweetaway.adapters.DividerItemDecoration;

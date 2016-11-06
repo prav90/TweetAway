@@ -1,24 +1,35 @@
 package com.codepath.apps.tweetaway.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.apps.tweetaway.R;
-import com.codepath.apps.tweetaway.TwitterApplication;
 import com.codepath.apps.tweetaway.adapters.UserHomePagerAdapter;
+import com.codepath.apps.tweetaway.application.TwitterApplication;
+import com.codepath.apps.tweetaway.fragments.HomeTimelineFragment;
 import com.codepath.apps.tweetaway.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class TimelineActivity extends AppCompatActivity {
@@ -26,11 +37,15 @@ public class TimelineActivity extends AppCompatActivity {
   public static final int COMPOSE_REQUEST_CODE = 100;
 
   private User mCurrentUser;
+  private ActionBarDrawerToggle mDrawerToggle;
+  private UserHomePagerAdapter mPagerAdapter;
 
-  FloatingActionButton mFabNewTweet;
-  Toolbar mToolBar;
-  ViewPager mPager;
-  TabLayout mTabLayout;
+  @BindView(R.id.fabNewTweet) FloatingActionButton mFabNewTweet;
+  @BindView(R.id.toolBar) Toolbar mToolBar;
+  @BindView(R.id.pagerUserHome) ViewPager mPager;
+  @BindView(R.id.tabsUserHome) TabLayout mTabLayout;
+  @BindView(R.id.drawerLayout) DrawerLayout mDrawerLayout;
+  @BindView(R.id.nvView) NavigationView mNvNavigationView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +53,11 @@ public class TimelineActivity extends AppCompatActivity {
     setContentView(R.layout.activity_timeline);
 
     // Bind Views
-    //ButterKnife.bind(this);
-    mToolBar = (Toolbar) findViewById(R.id.toolBar);
-    mFabNewTweet = (FloatingActionButton) findViewById(R.id.fabNewTweet);
-    mTabLayout = (TabLayout) findViewById(R.id.tabsUserHome);
-    mPager = (ViewPager) findViewById(R.id.pagerUserHome);
-
+    ButterKnife.bind(this);
     setSupportActionBar(mToolBar);
 
-    mPager.setAdapter(new UserHomePagerAdapter(getSupportFragmentManager(), this));
+    mPagerAdapter = new UserHomePagerAdapter(getSupportFragmentManager(), this);
+    mPager.setAdapter(mPagerAdapter);
     mTabLayout.setupWithViewPager(mPager);
 
     mFabNewTweet.setOnClickListener(new View.OnClickListener() {
@@ -59,8 +70,31 @@ public class TimelineActivity extends AppCompatActivity {
       }
     });
 
+    mDrawerToggle =
+      new ActionBarDrawerToggle(this, mDrawerLayout, mToolBar, R.string.drawer_open, R.string.drawer_close);
+
     // populate the timeline
     getCurrentUser();
+  }
+
+  @Override
+  protected void onPostCreate(Bundle savedInstanceState) {
+    super.onPostCreate(savedInstanceState);
+    mDrawerToggle.syncState();
+  }
+
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    mDrawerToggle.onConfigurationChanged(newConfig);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    if (mDrawerToggle.onOptionsItemSelected(item)) {
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 
   @Override
@@ -72,25 +106,10 @@ public class TimelineActivity extends AppCompatActivity {
       }
       //Toast.makeText(TimelineActivity.this, statusUpdate, Toast.LENGTH_LONG).show();
       // call the api and refresh the timeline
-//      mClient.postStatusUpdate(statusUpdate, new JsonHttpResponseHandler() {
-//        @Override
-//        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//          try {
-//            Tweet recentComposeTweet = Tweet.fromJSON(response);
-//            mTweets.add(0, recentComposeTweet);
-//            mAdapter.notifyDataSetChanged();
-//            mRvTweets.getLayoutManager().scrollToPosition(0);
-//            Toast.makeText(TimelineActivity.this, "Status update success", Toast.LENGTH_SHORT).show();
-//          } catch (Exception e) {
-//            Log.d("compose failure", e.toString());
-//          }
-//        }
-//
-//        @Override
-//        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//          Toast.makeText(TimelineActivity.this, "Status update failed", Toast.LENGTH_SHORT).show();
-//        }
-//      });
+      HomeTimelineFragment homeTimeline =
+        (HomeTimelineFragment)mPagerAdapter.getRegisteredFragment(0);
+      mPager.setCurrentItem(0);
+      homeTimeline.onActivityResult(requestCode, resultCode, data);
     }
   }
 
@@ -100,6 +119,26 @@ public class TimelineActivity extends AppCompatActivity {
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
         try {
           mCurrentUser = User.fromJSON(response);
+          View navHeaderView = mNvNavigationView.getHeaderView(0);
+          ImageView navHeaderImage = (ImageView) navHeaderView.findViewById(R.id.ivNavHeader);
+          Glide
+            .with(TimelineActivity.this)
+            .load(mCurrentUser.getProfileImageURL())
+            .into(navHeaderImage);
+          mDrawerLayout.addDrawerListener(mDrawerToggle);
+          mNvNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+              switch (item.getItemId()) {
+                case R.id.profileMenuItem:
+                  Intent i = new Intent(TimelineActivity.this, UserProfileActivity.class);
+                  i.putExtra("screen_name", mCurrentUser.getScreenName());
+                  startActivity(i);
+                default:
+                  return true;
+              }
+            }
+          });
         } catch (Exception e) {
           Log.d("User fetch failed", e.toString());
         }

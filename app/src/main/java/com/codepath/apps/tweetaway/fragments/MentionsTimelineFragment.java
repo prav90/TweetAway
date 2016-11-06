@@ -12,7 +12,7 @@ import cz.msebera.android.httpclient.Header;
  */
 
 public class MentionsTimelineFragment extends HomeTimelineFragment {
-  public static MentionsTimelineFragment newInstance(String fragmentType) {
+  public static MentionsTimelineFragment newInstance() {
     return new MentionsTimelineFragment();
   }
 

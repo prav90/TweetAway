@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
+import com.codepath.apps.tweetaway.fragments.DirectMessagesFragment;
 import com.codepath.apps.tweetaway.fragments.HomeTimelineFragment;
 import com.codepath.apps.tweetaway.fragments.MentionsTimelineFragment;
 
@@ -13,7 +14,7 @@ import com.codepath.apps.tweetaway.fragments.MentionsTimelineFragment;
 
 public class UserHomePagerAdapter extends SmartFragmentStatePagerAdapter {
 
-  private String tabTitles[] = new String[] {"Home", "Mentions"};
+  private String tabTitles[] = new String[] {"Home", "Mentions", "Messages"};
 
   public UserHomePagerAdapter(FragmentManager fm, Context context) {
     super(fm);
@@ -28,9 +29,11 @@ public class UserHomePagerAdapter extends SmartFragmentStatePagerAdapter {
   public Fragment getItem(int position) {
     switch (position) {
       case 0:
-        return HomeTimelineFragment.newInstance("home");
+        return HomeTimelineFragment.newInstance();
       case 1:
-        return MentionsTimelineFragment.newInstance("mentions");
+        return MentionsTimelineFragment.newInstance();
+      case 2:
+        return DirectMessagesFragment.newInstance();
       default:
         return null;
     }

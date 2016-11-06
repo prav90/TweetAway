@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.codepath.apps.tweetaway.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.tweetaway.adapters.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.tweetaway.R;
 import com.codepath.apps.tweetaway.activities.UserProfileActivity;
 import com.codepath.apps.tweetaway.adapters.DividerItemDecoration;
@@ -82,6 +82,12 @@ public abstract class BaseTimeLineFragment
 
     populateTimeline();
     return view;
+  }
+
+  protected void addToTop(Tweet recentComposeTweet) {
+    mTweets.add(0, recentComposeTweet);
+    mAdapter.notifyDataSetChanged();
+    mRvTweets.getLayoutManager().scrollToPosition(0);
   }
 
   protected void addAll(JSONArray response) {
