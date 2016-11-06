@@ -4,7 +4,8 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import com.codepath.apps.tweetaway.fragments.TimelineFragment;
+import com.codepath.apps.tweetaway.fragments.HomeTimelineFragment;
+import com.codepath.apps.tweetaway.fragments.MentionsTimelineFragment;
 
 /**
  * Created by rpraveen on 11/5/16.
@@ -12,29 +13,26 @@ import com.codepath.apps.tweetaway.fragments.TimelineFragment;
 
 public class UserHomePagerAdapter extends SmartFragmentStatePagerAdapter {
 
-  final int PAGE_COUNT = 3;
-  private String tabTitles[] = new String[] {"Home", "Mentions", "Message"};
-  private Context mContext;
+  private String tabTitles[] = new String[] {"Home", "Mentions"};
 
   public UserHomePagerAdapter(FragmentManager fm, Context context) {
     super(fm);
-    mContext = context;
   }
 
   @Override
   public int getCount() {
-    return PAGE_COUNT;
+    return tabTitles.length;
   }
 
   @Override
   public Fragment getItem(int position) {
     switch (position) {
       case 0:
-        return TimelineFragment.newInstance("home");
+        return HomeTimelineFragment.newInstance("home");
       case 1:
-        return TimelineFragment.newInstance("mentions");
+        return MentionsTimelineFragment.newInstance("mentions");
       default:
-        return TimelineFragment.newInstance("home");
+        return null;
     }
   }
 

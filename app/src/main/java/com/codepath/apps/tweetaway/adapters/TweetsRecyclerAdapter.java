@@ -27,9 +27,12 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<TweetsRecyclerAd
   private List<Tweet> mTweets;
   private Context mContext;
 
-  public TweetsRecyclerAdapter(Context context, List<Tweet> tweets) {
+  private OnTweetClickListener mTweetsEventListener;
+
+  public TweetsRecyclerAdapter(Context context, OnTweetClickListener listener, List<Tweet> tweets) {
     mTweets = tweets;
     mContext = context;
+    mTweetsEventListener = listener;
   }
 
   @Override
@@ -41,7 +44,7 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<TweetsRecyclerAd
 
   @Override
   public void onBindViewHolder(TweetHolder holder, int position) {
-    Tweet currentTweet = mTweets.get(position);
+    final Tweet currentTweet = mTweets.get(position);
     holder.tvProfileName.setText(currentTweet.getUser().getName());
     holder.tvTwitterName.setText(currentTweet.getUser().getScreenName());
     holder.tvTweetBody.setText(currentTweet.getBody());
@@ -67,6 +70,13 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<TweetsRecyclerAd
         .bitmapTransform(new RoundedCornersTransformation(mContext, 10, 10))
         .into(holder.ivTweetImage);
     }
+
+    holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        mTweetsEventListener.onProfileImageClicked(currentTweet.getUser().getScreenName());
+      }
+    });
   }
 
   @Override
@@ -91,5 +101,9 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<TweetsRecyclerAd
       super(view);
       ButterKnife.bind(this, view);
     }
+  }
+
+  public interface OnTweetClickListener {
+    void onProfileImageClicked(String screen_name);
   }
 }

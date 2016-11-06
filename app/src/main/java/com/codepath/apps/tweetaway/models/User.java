@@ -1,8 +1,12 @@
 package com.codepath.apps.tweetaway.models;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by rpraveen on 10/27/16.
@@ -68,6 +72,16 @@ import org.parceler.Parcel;
 @Parcel
 public class User {
   private String name;
+  long uid;
+  String screenName;
+  String profileImageURL;
+  String profileBanner;
+  String profileDescription;
+  long followersCount;
+  long followingCount;
+  boolean isVerifiedProfile;
+  String location;
+  String url;
 
   public String getName() {
     return name;
@@ -82,12 +96,37 @@ public class User {
   }
 
   public String getProfileImageURL() {
-    return profileImageURL;
+    return profileImageURL.replace("_normal", "");
   }
 
-  long uid;
-  String screenName;
-  String profileImageURL;
+  public String getProfileBanner() {
+    return profileBanner;
+  }
+
+  public String getProfileDescription() {
+    return profileDescription;
+  }
+
+  public long getFollowersCount() {
+    return followersCount;
+  }
+
+  public long getFollowingCount() {
+    return followingCount;
+  }
+
+  public boolean isVerifiedProfile() {
+    return isVerifiedProfile;
+  }
+
+  public String getLocation() {
+    return location;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
 
   public static User fromJSON(JSONObject jsonObject) throws JSONException {
     User user = new User();
@@ -97,7 +136,24 @@ public class User {
     if (user.screenName != null) {
       user.screenName = "@" + user.getScreenName().trim();
     }
-    user.profileImageURL = jsonObject.getString("profile_image_url_https");
+    user.profileImageURL = jsonObject.getString("profile_image_url");
+    if (jsonObject.has("profile_banner_url")) {
+      user.profileBanner = jsonObject.getString("profile_banner_url");
+    }
+    user.profileDescription = jsonObject.getString("description");
+    user.followingCount = jsonObject.getLong("friends_count");
+    user.followersCount = jsonObject.getLong("followers_count");
+    user.isVerifiedProfile = jsonObject.getBoolean("verified");
+    user.location = jsonObject.getString("location");
+    user.url = jsonObject.getString("url");
     return user;
+  }
+
+  public static List<User> fromJSONArray(JSONArray jsonArray) throws JSONException {
+    ArrayList<User> users = new ArrayList<>();
+    for(int i = 0; i < jsonArray.length(); i++) {
+      users.add(fromJSON(jsonArray.getJSONObject(i)));
+    }
+    return users;
   }
 }

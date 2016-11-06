@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+    
+    <ImageView
+        android:id="@+id/ivProfileBanner"
+        android:layout_width="match_parent"
+        android:scaleType="fitXY"
+        android:layout_height="120dp"
+        android:background="#aab8c2"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="80dp"
+        tools:src="@drawable/ic_launcher"
+        android:id="@+id/ivProfileImage"/>
+
+    <ImageButton
+        android:id="@+id/ibFollowButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivProfileBanner"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        tools:src="@drawable/ic_favorite"
+        app:srcCompat="@drawable/ic_favorite"
+        />
+
+    <TextView
+        android:id="@+id/tvProfileName"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Profile Name"
+        android:layout_below="@+id/ivProfileImage"
+        android:layout_alignLeft="@+id/ivProfileImage"
+        android:layout_marginTop="12dp"/>
+
+    <TextView
+        android:id="@+id/tvTwitterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvProfileName"
+        android:layout_alignLeft="@+id/tvProfileName"
+        android:layout_marginTop="8dp"
+        tools:text="profileName@"
+        />
+
+    <TextView
+        android:id="@+id/tvProfileDescription"
+        android:ellipsize="end"
+        android:maxLines="3"
+        tools:text="this is test description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/tvTwitterName"
+        android:layout_alignRight="@+id/ibFollowButton"
+        android:layout_alignLeft="@+id/tvProfileName"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/layoutLocationAndContact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/tvProfileDescription"
+        android:layout_alignLeft="@+id/tvProfileDescription"
+        android:layout_alignRight="@+id/tvProfileDescription">
+        <ImageView
+            android:id="@+id/ivLocationIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:src="@drawable/ic_retweet"
+            app:srcCompat="@drawable/ic_retweet"
+            />
+        <TextView
+            android:id="@+id/tvLocation"
+            tools:text="Menlo Park, CA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/ivWebsite"
+            android:layout_marginLeft="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:src="@drawable/ic_retweet"
+            app:srcCompat="@drawable/ic_retweet"
+            />
+        <TextView
+            android:clickable="true"
+            android:id="@+id/tvWebsite"
+            android:layout_marginLeft="12dp"
+            tools:text="www.facebook.com"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/layoutFollowContent"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/layoutLocationAndContact"
+        android:layout_alignLeft="@+id/layoutLocationAndContact"
+        android:layout_alignRight="@+id/layoutLocationAndContact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/followingHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvFollowing"
+                android:textStyle="bold"
+                tools:text="234"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tvFollowingLabel"
+                android:text="Following"
+                android:layout_marginLeft="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/followersHolder"
+            android:layout_marginLeft="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvFollowers"
+                android:textStyle="bold"
+                tools:text="234"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tvFollowersLabel"
+                android:text="Followers"
+                android:layout_marginLeft="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/profileHeaderDivider"
+        android:orientation="vertical"
+        android:layout_marginTop="4dp"
+        android:layout_width="match_parent"
+        android:background="#aab8c2"
+        android:layout_height="8dp"
+        android:layout_below="@+id/layoutFollowContent"/>
+</RelativeLayout>

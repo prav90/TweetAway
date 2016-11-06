@@ -28,32 +28,72 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String REST_CONSUMER_SECRET = "eh0U8qNAyJFcxMbAq34HcQLKv7AsjEgF7QM1ZlKqfCQax0UKfx"; // Change this
 	public static final String REST_CALLBACK_URL = "oauth://cptweetaway"; // Change this (here and in manifest)
 
+  final int TWEET_COUNT = 10;
+
 	public TwitterClient(Context context) {
 		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
 	}
 
-	// CHANGE THIS
-	// DEFINE METHODS for different API endpoints here
-	public void getInterestingnessList(AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("?nojsoncallback=1&method=flickr.interestingness.getList");
-		// Can specify query string params directly or through RequestParams.
-		RequestParams params = new RequestParams();
-		params.put("format", "json");
-		client.get(apiUrl, params, handler);
-	}
-
-	public void getHomeTimeline(long maxID, String fragmentType, AsyncHttpResponseHandler handler) {
+	public void getHomeTimeline(long maxID, AsyncHttpResponseHandler handler) {
     String apiUrl = getApiUrl("statuses/home_timeline.json");
-    if (fragmentType.equals("mentions")) {
-      apiUrl = getApiUrl("statuses/mentions_timeline.json");
-    }
     // Can specify query string params directly or through RequestParams.
     RequestParams params = new RequestParams();
-    params.put("count", 25);
+    params.put("count", TWEET_COUNT);
     params.put("since_id", 1);
 		if (maxID != -1) {
 			params.put("max_id", maxID);
 		}
+    client.get(apiUrl, params, handler);
+  }
+
+  public void getMentionsTimeline(long maxID, AsyncHttpResponseHandler handler) {
+    String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+    RequestParams params = new RequestParams();
+    params.put("count", TWEET_COUNT);
+    params.put("since_id", 1);
+    if (maxID != -1) {
+      params.put("max_id", maxID);
+    }
+    client.get(apiUrl, params, handler);
+  }
+
+  public void getUserTimeline(String screenName, long maxID, AsyncHttpResponseHandler handler) {
+    String apiUrl = getApiUrl("statuses/user_timeline.json");
+    RequestParams params = new RequestParams();
+    params.put("screen_name", screenName);
+    params.put("count", TWEET_COUNT);
+    params.put("since_id", 1);
+    if (maxID != -1) {
+      params.put("max_id", maxID);
+    }
+    client.get(apiUrl, params, handler);
+  }
+
+  public void getUserLikesTimeline(String screenName, long maxID, AsyncHttpResponseHandler handler) {
+    String apiUrl = getApiUrl("favorites/list.json");
+    RequestParams params = new RequestParams();
+    params.put("screen_name", screenName);
+    params.put("count", TWEET_COUNT);
+    params.put("since_id", 1);
+    if (maxID != -1) {
+      params.put("max_id", maxID);
+    }
+    client.get(apiUrl, params, handler);
+  }
+
+  public void getFollowers(String screenName, long cursor, AsyncHttpResponseHandler handler) {
+    String apiUrl = getApiUrl("followers/list.json");
+    RequestParams params = new RequestParams();
+    params.put("screen_name", screenName);
+    params.put("cursor", cursor);
+    client.get(apiUrl, params, handler);
+  }
+
+  public void getFollowing(String screenName, long cursor, AsyncHttpResponseHandler handler) {
+    String apiUrl = getApiUrl("friends/list.json");
+    RequestParams params = new RequestParams();
+    params.put("screen_name", screenName);
+    params.put("cursor", cursor);
     client.get(apiUrl, params, handler);
   }
 
@@ -75,12 +115,10 @@ public class TwitterClient extends OAuthBaseClient {
 		client.get(apiUrl, params, handler);
 	}
 
-	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
-	 * 	  i.e getApiUrl("statuses/home_timeline.json");
-	 * 2. Define the parameters to pass to the request (query or body)
-	 *    i.e RequestParams params = new RequestParams("foo", "bar");
-	 * 3. Define the request method and make a call to the client
-	 *    i.e client.get(apiUrl, params, handler);
-	 *    i.e client.post(apiUrl, params, handler);
-	 */
+  public void getUserProfile(String screenName, AsyncHttpResponseHandler handler) {
+    String apiUrl = getApiUrl("users/show.json");
+    RequestParams params = new RequestParams();
+    params.put("screen_name", screenName);
+    client.get(apiUrl, params, handler);
+  }
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="horizontal"
+              android:layout_margin="8dp"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+    
+    <ImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        tools:src="@drawable/ic_launcher"/>
+
+    <RelativeLayout
+        android:layout_marginLeft="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tvProfileName"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Profile Name"/>
+        <TextView
+            android:id="@+id/tvTwitterName"
+            android:layout_below="@+id/tvProfileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="twittername@"/>
+        <TextView
+            android:id="@+id/tvProfileDescription"
+            android:layout_below="@+id/tvTwitterName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Just a profile description"
+            />
+
+    </RelativeLayout>
+</LinearLayout>
