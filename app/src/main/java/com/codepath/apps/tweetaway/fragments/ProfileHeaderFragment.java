@@ -15,6 +15,7 @@ import com.codepath.apps.tweetaway.R;
 import com.codepath.apps.tweetaway.activities.FollowActivity;
 import com.codepath.apps.tweetaway.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.raizlabs.android.dbflow.StringUtils;
 
 import org.json.JSONObject;
 
@@ -30,14 +31,11 @@ public class ProfileHeaderFragment extends FragmentBase {
 
   @BindView(R.id.ivProfileBanner) ImageView mIvProfileBanner;
   @BindView(R.id.ivProfileImage) ImageView mIvProfileImage;
-  @BindView(R.id.tvTwitterName) TextView mTvTwitterName;
   @BindView(R.id.tvProfileName) TextView mTvProfileName;
   @BindView(R.id.tvProfileDescription) TextView mTvProfileDescription;
   @BindView(R.id.layoutLocationAndContact) LinearLayout mLocationAndContactHolder;
   @BindView(R.id.ivLocationIcon) ImageView mIvLocationIcon;
   @BindView(R.id.tvLocation) TextView mTvLocation;
-  @BindView(R.id.ivWebsite) ImageView mIvWebsite;
-  @BindView(R.id.tvWebsite) TextView mTvWebsite;
   @BindView(R.id.layoutFollowContent) LinearLayout mFollowContentHolder;
   @BindView(R.id.tvFollowers) TextView mTvFollowers;
   @BindView(R.id.tvFollowing) TextView mTvFollowing;
@@ -74,8 +72,11 @@ public class ProfileHeaderFragment extends FragmentBase {
             .into(mIvProfileImage);
           }
           mTvProfileName.setText(user.getName());
-          mTvTwitterName.setText(user.getScreenName());
-          mTvProfileDescription.setText(user.getProfileDescription());
+          if (StringUtils.isNotNullOrEmpty(user.getProfileDescription())) {
+            mTvProfileDescription.setText(user.getProfileDescription());
+          } else {
+            mTvProfileDescription.setVisibility(View.GONE);
+          }
           mTvFollowers.setText("" + user.getFollowersCount());
           mTvFollowing.setText("" + user.getFollowingCount());
           mFollowingHolder.setOnClickListener(new View.OnClickListener() {
@@ -96,19 +97,10 @@ public class ProfileHeaderFragment extends FragmentBase {
               startActivity(i);
             }
           });
-          mTvLocation.setVisibility(View.GONE);
-          mIvLocationIcon.setVisibility(View.GONE);
-          mIvWebsite.setVisibility(View.GONE);
-          mTvWebsite.setVisibility(View.GONE);
+          mLocationAndContactHolder.setVisibility(View.GONE);
           if (user.getLocation() != null && !user.getLocation().trim().equalsIgnoreCase("")) {
             mTvLocation.setText(user.getLocation());
-            mIvLocationIcon.setVisibility(View.VISIBLE);
-            mTvLocation.setVisibility(View.VISIBLE);
-          }
-          if (user.getUrl() != null) {
-            mTvWebsite.setText(user.getUrl());
-            mIvWebsite.setVisibility(View.VISIBLE);
-            mTvWebsite.setVisibility(View.VISIBLE);
+            mLocationAndContactHolder.setVisibility(View.VISIBLE);
           }
         } catch (Exception e) {
           showToast("user parse failed");

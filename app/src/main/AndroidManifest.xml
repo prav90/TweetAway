@@ -44,7 +44,11 @@
         <activity
             android:name=".activities.ComposeTweet"
             android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".activities.UserProfileActivity" />
+        <activity android:name=".activities.UserProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.TimelineActivity" />
+        </activity>
         <activity android:name=".activities.FollowActivity"/>
     </application>
 

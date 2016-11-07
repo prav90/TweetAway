@@ -29,8 +29,8 @@
                     android:id="@+id/toolBar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="#00aced"
-                    app:titleTextColor="@android:color/white"
+                    android:background="@color/home_toolbar_background"
+                    app:titleTextColor="@android:color/black"
                     app:layout_scrollFlags="scroll|enterAlways"
                     />
             </android.support.design.widget.AppBarLayout>
@@ -38,9 +38,11 @@
                 android:id="@+id/tabsUserHome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/TweetAwayTabLayout"
                 app:tabMode="fixed" />
 
             <android.support.v4.view.ViewPager
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:id="@+id/pagerUserHome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,7 +59,8 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_margin="16dp"
-            android:src="@android:drawable/ic_input_add"
+            android:src="@drawable/ic_fab_new_tweet"
+            app:backgroundTint="#1DA1F2"
             app:layout_anchor="@id/holder"
             app:layout_anchorGravity="bottom|right|end"
             />

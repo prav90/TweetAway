@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.tweetaway.R;
@@ -55,6 +56,7 @@ public class TimelineActivity extends AppCompatActivity {
     // Bind Views
     ButterKnife.bind(this);
     setSupportActionBar(mToolBar);
+    getSupportActionBar().setTitle(R.string.tab_home);
 
     mPagerAdapter = new UserHomePagerAdapter(getSupportFragmentManager(), this);
     mPager.setAdapter(mPagerAdapter);
@@ -72,6 +74,32 @@ public class TimelineActivity extends AppCompatActivity {
 
     mDrawerToggle =
       new ActionBarDrawerToggle(this, mDrawerLayout, mToolBar, R.string.drawer_open, R.string.drawer_close);
+
+    mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+      @Override
+      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+      }
+
+      @Override
+      public void onPageSelected(int position) {
+        int toolBarTitle = R.string.tab_home;
+        switch (position) {
+          case 1:
+            toolBarTitle = R.string.tab_mentions;
+            break;
+          case 2:
+            toolBarTitle = R.string.tab_message;
+            break;
+        }
+        getSupportActionBar().setTitle(toolBarTitle);
+      }
+
+      @Override
+      public void onPageScrollStateChanged(int state) {
+
+      }
+    });
 
     // populate the timeline
     getCurrentUser();
@@ -106,9 +134,9 @@ public class TimelineActivity extends AppCompatActivity {
       }
       //Toast.makeText(TimelineActivity.this, statusUpdate, Toast.LENGTH_LONG).show();
       // call the api and refresh the timeline
+      mPager.setCurrentItem(0);
       HomeTimelineFragment homeTimeline =
         (HomeTimelineFragment)mPagerAdapter.getRegisteredFragment(0);
-      mPager.setCurrentItem(0);
       homeTimeline.onActivityResult(requestCode, resultCode, data);
     }
   }
@@ -125,6 +153,10 @@ public class TimelineActivity extends AppCompatActivity {
             .with(TimelineActivity.this)
             .load(mCurrentUser.getProfileImageURL())
             .into(navHeaderImage);
+          TextView navProfileName = (TextView) navHeaderView.findViewById(R.id.navHeaderProfileName);
+          TextView navScreenName = (TextView) navHeaderView.findViewById(R.id.navHeaderScreenName);
+          navProfileName.setText(mCurrentUser.getName());
+          navScreenName.setText(mCurrentUser.getScreenName());
           mDrawerLayout.addDrawerListener(mDrawerToggle);
           mNvNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -134,9 +166,16 @@ public class TimelineActivity extends AppCompatActivity {
                   Intent i = new Intent(TimelineActivity.this, UserProfileActivity.class);
                   i.putExtra("screen_name", mCurrentUser.getScreenName());
                   startActivity(i);
+                  break;
+                case R.id.logoutMenuItem:
+                  TwitterApplication.getRestClient().clearAccessToken();
+                  Intent login = new Intent(TimelineActivity.this, LoginActivity.class);
+                  startActivity(login);
+                  break;
                 default:
                   return true;
               }
+              return true;
             }
           });
         } catch (Exception e) {

@@ -6,4 +6,11 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
+    <!-- Home Toolbar titles -->
+    <string name="tab_home">Home</string>
+    <string name="tab_mentions">Mentions</string>
+    <string name="tab_message">Messages</string>
+
+    <string name="toolbar_friends">Friends</string>
+    <string name="toolbar_followers">Followers</string>
 </resources>

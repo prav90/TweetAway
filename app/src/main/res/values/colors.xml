@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="tweet_icon_color">#aab8c2</string>
+    <color name="tweet_icon_color">#aab8c2</color>
+    <color name="primary_app_color">#1DA1F2</color>
+    <color name="home_toolbar_background">#f9f7f7</color>
 </resources>

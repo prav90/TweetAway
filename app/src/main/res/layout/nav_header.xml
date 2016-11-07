@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="192dp"
+              xmlns:tools="http://schemas.android.com/tools"
               android:background="?attr/colorPrimaryDark"
               android:theme="@style/ThemeOverlay.AppCompat.Dark"
-              android:orientation="vertical"
-              android:gravity="bottom">
+              android:backgroundTint="@color/primary_app_color"
+              >
+
     <ImageView
         android:id="@+id/ivNavHeader"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY" />
-</LinearLayout>
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        tools:src="@drawable/ic_launcher"
+        android:layout_above="@+id/navHeaderProfileName"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="20dp"
+        />
+
+
+    <TextView
+        android:id="@+id/navHeaderProfileName"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/navHeaderScreenName"
+        android:layout_marginBottom="12dp"
+        android:layout_alignLeft="@+id/navHeaderScreenName"
+        tools:text="Test"/>
+
+    <TextView
+        android:id="@+id/navHeaderScreenName"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="12dp"
+        tools:text="Test"/>
+</RelativeLayout>
