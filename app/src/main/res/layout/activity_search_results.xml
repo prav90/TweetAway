@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
+        app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_app_color"
+        android:titleTextColor="@android:color/black"
+        app:layout_scrollFlags="scroll|enterAlways"
+        />
+    <FrameLayout
+        android:id="@+id/flSearchResultsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

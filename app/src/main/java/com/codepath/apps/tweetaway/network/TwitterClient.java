@@ -127,6 +127,20 @@ public class TwitterClient extends OAuthBaseClient {
     return true;
   }
 
+  public boolean getSearchResults(String searchTerm, long maxID, AsyncHttpResponseHandler handler) {
+    String apiUrl = getApiUrl("search/tweets.json");
+    RequestParams params = new RequestParams();
+    params.put("q", searchTerm);
+    params.put("since_id", 1);
+    if (maxID != -1) {
+      params.put("max_id", maxID);
+    }
+
+    client.get(apiUrl, params, handler);
+
+    return true;
+  }
+
 	public void getCurrentUserDetails(AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("account/verify_credentials.json");
 		RequestParams params = new RequestParams();
