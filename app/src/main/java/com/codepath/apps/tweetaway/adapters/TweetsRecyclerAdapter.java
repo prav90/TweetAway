@@ -71,6 +71,13 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<TweetsRecyclerAd
         .into(holder.ivTweetImage);
     }
 
+    holder.ivReplyTo.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        mTweetsEventListener.onReplyToClicked(currentTweet);
+      }
+    });
+
     holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -92,6 +99,7 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<TweetsRecyclerAd
     @BindView(R.id.ivProfileImage) ImageView ivProfileImage;
     @BindView(R.id.tvTimeSinceTweet) TextView tvTimeSinceTweet;
     @BindView(R.id.ivTweetImage) ImageView ivTweetImage;
+    @BindView(R.id.ivReplyTo) ImageView ivReplyTo;
 
     // footer
     @BindView(R.id.tvRetweets) TextView tvRetweets;
@@ -105,5 +113,6 @@ public class TweetsRecyclerAdapter extends RecyclerView.Adapter<TweetsRecyclerAd
 
   public interface OnTweetClickListener {
     void onProfileImageClicked(String screen_name);
+    void onReplyToClicked(Tweet tweet);
   }
 }

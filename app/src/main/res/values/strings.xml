@@ -13,4 +13,6 @@
 
     <string name="toolbar_friends">Friends</string>
     <string name="toolbar_followers">Followers</string>
+    <string name="compose_reply">Reply</string>
+    <string name="compose_Tweet">Tweet</string>
 </resources>

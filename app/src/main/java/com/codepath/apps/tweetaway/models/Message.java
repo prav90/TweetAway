@@ -5,6 +5,7 @@ import com.codepath.apps.tweetaway.utils.DateUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +14,12 @@ import java.util.List;
  * Created by rpraveen on 11/6/16.
  */
 
+@Parcel
 public class Message {
-  private String senderScreenName;
-  private String text;
-  private String senderProfileImageUrl;
-  private String createdAt;
+  String senderScreenName;
+  String text;
+  String senderProfileImageUrl;
+  String createdAt;
 
   public String getSenderScreenName() {
     return senderScreenName;

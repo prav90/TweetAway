@@ -60,7 +60,15 @@
             />
 
     </RelativeLayout>
-
+    <TextView
+        android:id="@+id/replyToBlock"
+        android:visibility="gone"
+        android:layout_marginTop="4dp"
+        android:layout_alignLeft="@+id/ivCancelCompose"
+        android:layout_marginBottom="4dp"
+        android:layout_above="@+id/etNewStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <EditText
         android:textColor="#000000"
         android:textSize="16sp"
@@ -96,7 +104,7 @@
             android:background="#00aced"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tweet"
+            android:text="@string/compose_Tweet"
             android:id="@+id/btNewTweet"
             android:padding="4dp"
             android:layout_alignParentRight="true"

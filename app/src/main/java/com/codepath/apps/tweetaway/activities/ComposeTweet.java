@@ -10,15 +10,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.apps.tweetaway.R;
+import com.codepath.apps.tweetaway.application.TwitterApplication;
+import com.codepath.apps.tweetaway.models.Tweet;
 import com.codepath.apps.tweetaway.models.User;
+import com.codepath.apps.tweetaway.network.TwitterClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by rpraveen on 10/29/16.
@@ -35,6 +42,10 @@ public class ComposeTweet extends AppCompatActivity {
   @BindView(R.id.tvProfileShortName) TextView tvProfileName;
   @BindView(R.id.tvFullName) TextView tvFullName;
   @BindView(R.id.ivProfileImage) ImageView ivProfileImage;
+  @BindView(R.id.replyToBlock) TextView tvReplyToBlock;
+
+  private String mReplyTo = "";
+  private Tweet mReplyToTweet;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -42,16 +53,25 @@ public class ComposeTweet extends AppCompatActivity {
     setContentView(R.layout.activity_compose_tweet);
     ButterKnife.bind(this);
     User currentUser = Parcels.unwrap(getIntent().getParcelableExtra("current_user"));
+    mReplyToTweet = Parcels.unwrap(getIntent().getParcelableExtra("reply_to_tweet"));
+
+    if (mReplyToTweet != null) {
+      mReplyTo = mReplyToTweet.getUser().getScreenName();
+      etNewStatus.setText(mReplyTo);
+      btNewTweet.setText(R.string.compose_reply);
+      tvReplyToBlock.setText("Reply to " + mReplyToTweet.getUser().getScreenName());
+      tvReplyToBlock.setVisibility(View.VISIBLE);
+    }
 
     // intialize views with values
-    tvTweetCharsLeft.setText(""+TWEET_MAX_CHARS);
+    tvTweetCharsLeft.setText(""+ (TWEET_MAX_CHARS - mReplyTo.length()));
     if (currentUser != null) {
       tvFullName.setText(currentUser.getName());
       tvProfileName.setText(currentUser.getScreenName());
       Picasso
-      .with(this)
-      .load(currentUser.getProfileImageURL())
-      .into(ivProfileImage);
+        .with(this)
+        .load(currentUser.getProfileImageURL())
+        .into(ivProfileImage);
     }
 
     // set up view listeners
@@ -72,6 +92,10 @@ public class ComposeTweet extends AppCompatActivity {
         } else if (!btNewTweet.isEnabled()){
           btNewTweet.setEnabled(true);
         }
+        if (!status.toString().contains(mReplyTo)) {
+          btNewTweet.setText(R.string.compose_Tweet);
+          tvReplyToBlock.setVisibility(View.GONE);
+        }
         tvTweetCharsLeft.setText(""+charsLeft);
       }
     });
@@ -79,6 +103,27 @@ public class ComposeTweet extends AppCompatActivity {
     btNewTweet.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        // if it's a reply post the reply in this activity
+        String replyString = getString(R.string.compose_reply);
+        if (btNewTweet.getText().equals(replyString)) {
+          TwitterClient client = TwitterApplication.getRestClient();
+          client.replyToTweet(
+            etNewStatus.getText().toString(),
+            mReplyToTweet.getUid(),
+            new JsonHttpResponseHandler(){
+              @Override
+              public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Toast.makeText(ComposeTweet.this, "Sending reply failed", Toast.LENGTH_SHORT);
+              }
+
+              @Override
+              public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Toast.makeText(ComposeTweet.this, "Reply sent", Toast.LENGTH_SHORT);
+                ComposeTweet.this.onBackPressed();
+              }
+            }
+          );
+        }
         returnToTimelineActivity(etNewStatus.getText().toString());
       }
     });

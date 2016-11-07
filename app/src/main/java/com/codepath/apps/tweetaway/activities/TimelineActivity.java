@@ -141,6 +141,10 @@ public class TimelineActivity extends AppCompatActivity {
     }
   }
 
+  public User getLoggedInUser() {
+    return mCurrentUser;
+  }
+
   private void getCurrentUser() {
     TwitterApplication.getRestClient().getCurrentUserDetails(new JsonHttpResponseHandler(){
       @Override

@@ -9,14 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.codepath.apps.tweetaway.adapters.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.tweetaway.R;
+import com.codepath.apps.tweetaway.activities.ComposeTweet;
 import com.codepath.apps.tweetaway.activities.UserProfileActivity;
 import com.codepath.apps.tweetaway.adapters.DividerItemDecoration;
+import com.codepath.apps.tweetaway.adapters.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.tweetaway.adapters.TweetsRecyclerAdapter;
 import com.codepath.apps.tweetaway.models.Tweet;
 
 import org.json.JSONArray;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,6 +113,12 @@ public abstract class BaseTimeLineFragment
   public void onProfileImageClicked(String screen_name) {
     Intent i = new Intent(getActivity(), UserProfileActivity.class);
     i.putExtra("screen_name", screen_name);
+    startActivity(i);
+  }
+
+  public void onReplyToClicked(Tweet tweet) {
+    Intent i = new Intent(getActivity(), ComposeTweet.class);
+    i.putExtra("reply_to_tweet", Parcels.wrap(tweet));
     startActivity(i);
   }
 

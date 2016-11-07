@@ -9,6 +9,7 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 
@@ -45,15 +46,16 @@ import java.util.ArrayList;
  "in_reply_to_status_id": null
  },
  */
+@Parcel
 public class Tweet {
-  private String body;
-  private long uid;
-  private String createdAt;
-  private long retweetCount;
-  private long favoriteCount;
+  String body;
+  long uid;
+  String createdAt;
+  long retweetCount;
+  long favoriteCount;
 
-  private User user;
-  private Media media;
+  User user;
+  Media media;
 
   public String getBody() {
     return body;

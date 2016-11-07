@@ -5,20 +5,21 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 /**
  * Created by rpraveen on 10/30/16.
  */
-
+@Parcel
 public class Media {
 
   // by default everything is text only
-  private boolean isTextOnly = true;
-  private boolean isImage = false;
-  private boolean isVideo = false;
+  boolean isTextOnly = true;
+  boolean isImage = false;
+  boolean isVideo = false;
 
-  private String imageURL = null;
-  private String videoURL = null;
+  String imageURL = null;
+  String videoURL = null;
 
   public static Media fromJSONArray(JSONArray mediaArray) {
     // there might be more than one of photos, multi_photos, video, animated_gif
