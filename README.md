@@ -48,7 +48,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://imgur.com/CmJKXQN' title='Video Walkthrough' width='' alt='http://i.imgur.com/CmJKXQN.gifv' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -60,6 +60,8 @@ Describe any challenges encountered while building the app.
 
 - [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
 - [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
+- [Glide] Image loading and caching library for android
+- [ButterKnife] - Library that reduces boiler plate code by annotating and binding to views
 
 ## License
 
